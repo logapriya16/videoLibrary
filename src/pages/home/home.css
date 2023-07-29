@@ -1,0 +1,8 @@
+
+.home-categories{
+    display: flex;
+    flex-wrap: wrap;
+}
+.home-elements{
+    margin: 1rem;
+}
