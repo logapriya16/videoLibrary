@@ -1,0 +1,17 @@
+.sidebar_container {
+  padding: 1rem;
+  border: 1px dotted ;
+  height: 100%;
+  width: 100%;
+}
+.sidenav-items{
+    font-weight: bold;
+    padding: 0.6rem;
+    width: 95%;
+    transition: box-shadow.8s;
+    cursor: pointer;
+}
+.sidenav-items:hover{
+color: cadetblue;
+box-shadow: 0 0 9px rgba(23, 23,23,23);
+}

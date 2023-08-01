@@ -1,10 +1,10 @@
 .App {
   text-align: center;
 }
-
 .container {
   display: flex;
   padding: 0.7rem;
+  
 }
 .video-bottom {
   display: flex;
@@ -17,10 +17,22 @@
 }
 .video-elements {
   display: flex;
-  flex-wrap: wrap;
+ flex-wrap: wrap;
+
+ justify-content: space-evenly;
+}
+.video-thumnail{
+  height: 200px;
+  width: 300px;
+
 }
 .each-video {
   padding: 1rem;
+  transition: box-shadow.3s;
+
+}
+.each-video:hover{
+  box-shadow: 0 0 11px rgba(23, 23, 33, 33);
 }
 .watch-later{
   position: relative;

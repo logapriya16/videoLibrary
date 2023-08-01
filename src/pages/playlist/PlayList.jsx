@@ -6,7 +6,7 @@ import { AiOutlinePlusCircle } from "react-icons/ai";
 import { useNavigate } from "react-router-dom";
 
 export default function PlayList() {
-  const { videoState, AddnewPlaylist,DeletePlaylist } = useContext(MainContext);
+  const { videoState, AddnewPlaylist,DeletePlaylist,all_playlist } = useContext(MainContext);
   const [shownew, setShownew] = useState(false);
   const navigate = useNavigate()
   console.log(videoState);
@@ -17,8 +17,8 @@ export default function PlayList() {
       </div>
       <div>
         <ul type="none">
-          {videoState.playlist.map((item) => (
-            <li>
+          {all_playlist.map((item) => (
+            <li className="each-video">
               <CiCircleRemove onClick={()=>DeletePlaylist(item.name)} />
               <img src={item.thumbnail} alt="" onClick={()=>navigate(`/playlist/${item.name}`)}  />
               <h4>{item.name}</h4>

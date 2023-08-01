@@ -1,10 +1,9 @@
 import React, { createContext, useEffect, useReducer } from "react";
 import { videoreducer } from "../reducers/videoreducer";
 import { categories, videos } from "../data";
-import { useParams } from "react-router-dom";
+
 export const MainContext = createContext();
 export default function MainContextProvider({ children }) {
-  const { name } = useParams();
   const videoInitial = {
     loading: false,
     videos: [],
@@ -61,6 +60,13 @@ export default function MainContextProvider({ children }) {
     ],
   };
   const [videoState, videoDispatch] = useReducer(videoreducer, videoInitial);
+
+  localStorage.setItem("playlist", JSON.stringify(videoState.playlist));
+  localStorage.setItem("videos", JSON.stringify(videoState.videos));
+  const all_playlist = JSON.parse(localStorage.getItem("playlist"));
+  const watchlist = JSON.parse(localStorage.getItem("watch_later"));
+  const all_videos = JSON.parse(localStorage.getItem("videos"));
+  console.log(all_playlist);
   const fetchVideos = () => {
     videoDispatch({ type: "set_videos", payload: videos });
   };
@@ -75,35 +81,101 @@ export default function MainContextProvider({ children }) {
     if (videoState.WatchLater.includes(video)) {
       const temp = videoState.WatchLater.filter((item) => item !== video);
       videoDispatch({ type: "set_watch_later", payload: temp });
+      console.log(temp);
+      localStorage.setItem("watch_later", JSON.stringify(temp));
     }
     if (!videoState.WatchLater.includes(video)) {
       const temp = [...videoState.WatchLater, video];
       videoDispatch({ type: "set_watch_later", payload: temp });
+      console.log(temp);
+      localStorage.setItem("watch_later", JSON.stringify(temp));
     }
   };
-  const AddnewPlaylist = (PlayList) => {
+  const AddnewPlaylist = (PlayList, video) => {
     PlayList.preventDefault();
-    const newPL = {
-      name: PlayList.target.elements.name.value,
-      description: PlayList.target.des.value,
-      thumbnail: "https://picsum.photos/300/174",
-      videos: [],
-    };
+    let newPL = [];
+    video === undefined
+      ? (newPL = {
+          name: PlayList.target.elements.name.value,
+          description: PlayList.target.des.value,
+          thumbnail: "https://picsum.photos/300/174",
+          videos: [],
+        })
+      : (newPL = {
+          name: PlayList.target.elements.name.value,
+          description: PlayList.target.des.value,
+          thumbnail: "https://picsum.photos/300/174",
+          videos: [video],
+        });
+
     const temp = [...videoState.playlist, newPL];
+    console.log(temp);
     videoDispatch({ type: "set_playlist", payload: temp });
+    localStorage.setItem("playlist", JSON.stringify(temp));
   };
   const DeletePlaylist = (name) => {
     const temp = videoState.playlist.filter((item) => item.name !== name);
     videoDispatch({ type: "set_playlist", payload: temp });
+
+    localStorage.setItem("playlist", JSON.stringify(temp));
   };
   const removeVideoFormPlaylist = (title, pl) => {
-    console.log(pl);
-    const tempPL = videoState.playlist
-      .filter((item) => item.name == pl)
-    console.log(tempPL);
-    //videoDispatch({ type: "set_playlist", payload: temp });
-  };
+    //console.log(pl, title);
+    let temp = videoState.playlist;
+    const newvideos = pl.videos.filter((video) => video.title !== title);
+    const newPlaylist = { ...pl, videos: newvideos };
+    temp = temp.map((list) => {
+      if (list.name === pl.name) {
+        return { ...newPlaylist };
+      } else {
+        return list;
+      }
+    });
+    console.log(temp);
+    videoDispatch({ type: "set_playlist", payload: temp });
 
+    localStorage.setItem("playlist", JSON.stringify(temp));
+  };
+  const addNewVideo = (playlist, newvideo) => {
+    console.log(playlist, newvideo);
+    const UpdatedPlaylist = playlist.videos.push(newvideo);
+    const temp = videoState.playlist.map((pl) => {
+      if (pl.name === playlist.name) {
+        return { ...playlist };
+      } else {
+        return pl;
+      }
+    });
+    //console.log(temp)
+    videoDispatch({ type: "set_playlist", payload: temp });
+
+    localStorage.setItem("playlist", JSON.stringify(temp));
+  };
+  const AddnewNotes = (e, curr_video) => {
+    e.preventDefault();
+    //console.log(curr_video);
+    let updatedVideo = {};
+    curr_video.notes?.length > 0
+      ? (updatedVideo = {
+          ...curr_video,
+          notes: curr_video.notes.concat(e.target.elements.notes.value),
+        })
+      : (updatedVideo = {
+          ...curr_video,
+          notes: [e.target.elements.notes.value],
+        });
+    console.log(updatedVideo);
+    const temp = videoState.videos.map((video) => {
+      if (video._id === curr_video._id) {
+        return updatedVideo;
+      } else {
+        return video;
+      }
+    });
+    videoDispatch({ type: "set_videos", payload: temp });
+    e.target.elements.reset.click();
+    localStorage.setItem("videos", temp);
+  };
   return (
     <MainContext.Provider
       value={{
@@ -112,6 +184,11 @@ export default function MainContextProvider({ children }) {
         AddnewPlaylist,
         DeletePlaylist,
         removeVideoFormPlaylist,
+        AddnewNotes,
+        addNewVideo,
+        watchlist,
+        all_playlist,
+        all_videos
       }}
     >
       {children}

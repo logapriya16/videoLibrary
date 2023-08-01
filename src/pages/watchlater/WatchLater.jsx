@@ -4,7 +4,7 @@ import { MainContext } from "../../context/MainContext";
 import { useNavigate } from "react-router-dom";
 import { BsStopwatch } from "react-icons/bs";
 export default function WatchLater() {
-  const { videoState,HandleWatchLater } = useContext(MainContext);
+  const { videoState,HandleWatchLater,watchlist } = useContext(MainContext);
   const navigate=useNavigate()
   return (
     <div className="container">
@@ -13,7 +13,7 @@ export default function WatchLater() {
       </div>
       <div>
         <ul type='none' className="video-elements">
-          {videoState.WatchLater.map((item) => (
+          {watchlist.map((item) => (
             <li className="each-video">
               <div className="watch-later">
                 <BsStopwatch className="watch-later-btn" onClick={()=>{HandleWatchLater(item)}} />

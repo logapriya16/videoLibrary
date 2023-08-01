@@ -1,8 +1,11 @@
-
-.home-categories{
-    display: flex;
-    flex-wrap: wrap;
+.home-categories {
+  display: flex;
+  flex-wrap: wrap;
 }
-.home-elements{
-    margin: 1rem;
+.home-elements {
+  margin: 1rem;
+  transition: box-shadow.3s;
+}
+.home-elements:hover {
+  box-shadow: 0 0 11px rgba(23, 23, 33, 33);
 }

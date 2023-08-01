@@ -5,8 +5,7 @@ import { MainContext } from "../../context/MainContext";
 import { CiCircleRemove } from "react-icons/ci";
 export default function EachPlayList() {
   const { name } = useParams();
-  const [activePlaylist,setActiveplaylist] = useState(name)
-  const { videoState ,removeVideoFormPlaylist} = useContext(MainContext);
+  const { videoState, removeVideoFormPlaylist ,all_playlist} = useContext(MainContext);
   return (
     <div className="container">
       <div>
@@ -14,16 +13,20 @@ export default function EachPlayList() {
       </div>
       <div>
         <ul type="none">
-          {videoState.playlist
-            .filter((video) => video.name === name)
+          {all_playlist
+            ?.filter((video) => video.name === name)
             .map((item) => (
-              <li className="each-video">
+              <li >
                 <h3>{item.name}</h3>
                 <ul type="none" className="video-elements">
-                  {item.videos.map((items) => (
-                    <li>
-                      <CiCircleRemove onClick={()=>removeVideoFormPlaylist(item.title,activePlaylist)} />
-                      <img src={items.thumbnail} alt="" />
+                  {item.videos?.map((items) => (
+                    <li className="each-video">
+                      <CiCircleRemove
+                        onClick={() =>
+                          removeVideoFormPlaylist(items.title, item)
+                        }
+                      />
+                      <img src={items?.thumbnail} alt="" />
                       <div className="video-bottom">
                         <div>
                           <img
@@ -34,11 +37,11 @@ export default function EachPlayList() {
                         </div>
                         <div className="video-details">
                           <p>
-                            {items.title}
+                            {items?.title}
                             <br />
-                            {items.category}
+                            {items?.category}
                             <br />
-                            {items.views}|{items.creator}
+                            {items?.views}|{items?.creator}
                           </p>
                         </div>
                       </div>

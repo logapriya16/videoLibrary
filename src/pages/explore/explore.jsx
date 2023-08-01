@@ -34,7 +34,7 @@ export default function Explore() {
         <ul type="none" className="video-elements">
           {filterItems.map((item) => (
             <li className="each-video">
-              <img src={item.thumbnail} alt="" />
+              <img src={item.thumbnail} alt="" className="video-thumnail" />
               <div className="video-bottom">
                 <div>
                   <img

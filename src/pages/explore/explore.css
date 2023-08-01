@@ -1,9 +1,10 @@
 .search{
     border: 0;
     border-bottom: 2px solid black;
-    width: 100%;
+    width: 80%;
 }
-
+.search:focus{
+    border: 0;
+}
 .explore-body{
-    margin: 1rem;
-}
+    margin: 1rem;}

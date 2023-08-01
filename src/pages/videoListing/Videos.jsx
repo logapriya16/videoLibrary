@@ -5,7 +5,8 @@ import Sidebar from "../../components/sidebar";
 import { BsStopwatch } from "react-icons/bs";
 
 export default function Videos() {
-  const { videoState,HandleWatchLater } = useContext(MainContext);
+          
+            const { videoState, HandleWatchLater , all_videos } = useContext(MainContext);
   const { category } = useParams();
   const navigate = useNavigate();
   return (
@@ -16,12 +17,18 @@ export default function Videos() {
       <div>
         <h2>{category}</h2>
         <ul type="none" className="video-elements">
-          {videoState.videos
+          {all_videos
             .filter((video) => video.category === category)
             .map((item) => (
               <li className="each-video">
                 <div className="watch-later">
-                <BsStopwatch className="watch-later-btn" onClick={()=>{HandleWatchLater(item);console.log(item)}} />
+                  <BsStopwatch
+                    className="watch-later-btn"
+                    onClick={() => {
+                      HandleWatchLater(item);
+                      console.log(item);
+                    }}
+                  />
                   <img
                     src={item.thumbnail}
                     alt=""
